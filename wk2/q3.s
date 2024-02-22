@@ -1,41 +1,38 @@
-# You should have more comments than I do in this file
-# Ideally, nearly every line should have a comment next to it! :D
-
 main:
 	# x in $t0
 
-	li	$v0, 4
-	la	$a0, prompt_string
+	la	$a0, prompt_str		# printf("Enter a number: )"
+	li	$v0, 4			# mode 4: print_string
 	syscall
 
-	li	$v0, 5
-	syscall
+	li	$v0, 5			# scanf("%d", x)
+	syscall				# mode 5: read_int
 	move	$t0, $v0
 
-	ble	$t0, 100, print_small_big
-	bge	$t0, 1000, print_small_big
+	ble	$t0, 100, if_false
+	bge	$t0, 1000, if_false
+	b	if_true
 
-print_medium:
-	li	$v0, 4
-	la	$a0, medium_string
+if_true:
+	la	$a0, medium_str		# printf("Enter a number: )"
+	li	$v0, 4			# mode 4: print_string
 	syscall
 
-	b	end
+	b	if_end
 
-print_small_big:
-	li	$v0, 4
-	la	$a0, small_big_string
+if_false:
+	la	$a0, small_big_str		# printf("Enter a number: )"
+	li	$v0, 4			# mode 4: print_string
 	syscall
 
+if_end:
 
-end:
-	li	$v0, 0
 	jr	$ra
 
 	.data
-prompt_string:
-	.asciiz"Enter a number: "
-medium_string:
-	.asciiz"medium\n"
-small_big_string:
-	.asciiz"small/big\n"
+prompt_str:
+	.asciiz "Enter a number: "
+small_big_str:
+	.asciiz "small/big\n"
+medium_str:
+	.asciiz "medium\n"

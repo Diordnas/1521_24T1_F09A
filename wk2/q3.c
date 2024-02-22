@@ -7,7 +7,10 @@ int main(void) {
 
     if (x > 100 && x < 1000) {
         printf("medium\n");
+        goto if_end
     } else {
         printf("small/big\n");
     }
+
+if_end:
 }

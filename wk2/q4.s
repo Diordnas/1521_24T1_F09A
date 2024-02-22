@@ -1,35 +1,27 @@
-# You should have more comments than I do in this file
-# Ideally, nearly every line should have a comment next to it! :D
-
-# The five parts of a loop:
-#  - initialise
-#  - check the condition
-#  - the body of the loop
-#  - increment the counter and jump back to condition
-#  - end!
+# Print every third number from 24 to 42.
 
 main:
 	# x in $t0
 
-init:
+main_loop_init:
 	li	$t0, 24
 
-cond:
-	bge	$t0, 42, end
+main_loop_cond:
+	bge	$t0, 42, main_loop_end
 
-body:
-	li	$v0, 1			# mode 1: print int
-	move	$a0, $t0		#
-	syscall				# print(y)
-
-	li	$v0, 11
-	li	$a0, '\n'
+main_loop_body:
+	move	$a0, $t0
+	li	$v0, 1
 	syscall
 
-step:
-	add	$t0, $t0, 3
-	b	cond
+	li	$a0, '\n'
+	li	$v0, 11
+	syscall
 
-end:
-	li	$v0, 0
+main_loop_incr:
+	add	$t0, $t0, 3
+	b	main_loop_cond
+
+main_loop_end:
+
 	jr	$ra
