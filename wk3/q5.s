@@ -1,4 +1,4 @@
-# A program that reads 10 numbers into memory
+# A simple program that will print 10 numbers from an array
 
 N_SIZE = 10
 
@@ -6,31 +6,29 @@ main:
 	# i in $t0
 
 loop_init:
-	li	$t0, 0		# i = 0
-
+	li	$t0, 0			# i = 0
 loop_cond:
-	bge	$t0, N_SIZE, loop_end
-
+	bge	$t0, N_SIZE, loop_end	# while (i < N_SIZE) {
 loop_body:
-	mul	$t2, $t0, 4	# index = i*4;
-	lw	$t1, numbers($t2)
+					# this is a slightly simpler method for calculating array addresses
+	mul	$t1, $t0, 4		# multiply i * 4 because word = 4 bytes
+	lw	$a0, numbers($t1)	# load word from numbers[i] into a register
+	li	$v0, 1			# printf(numbers[i])
+	syscall				# mode 1: print_int
 
-	li	$v0, 1
-	move	$a0, $t1
+	li	$a0, '\n'		# printf('\n')
+	li	$v0, 11			# mode 11: print_char
 	syscall
 
-	li	$v0, 11
-	li	$a0, '\n'
-	syscall
-
-loop_step:
-	add	$t0, $t0, 1
-
-	b	loop_cond
-
+loop_incr:
+	add	$t0, $t0, 1		# i++
+	b	loop_cond		# }
 loop_end:
-	li	$v0, 0
-	jr	$ra
+
+	jr	$ra			# return
+
 
 	.data
-numbers:	.word 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+numbers:
+	# this is an array of words
+	.word 0, 1, 2, 3, 4, 5, 6, 7, 8, 9

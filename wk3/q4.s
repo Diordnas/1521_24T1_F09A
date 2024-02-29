@@ -1,30 +1,30 @@
-# A program that reads 10 numbers into memory
+# A simple program that will read 10 numbers into an array
 
 N_SIZE = 10
 
 main:
 	# i in $t0
-
 loop_init:
 	li	$t0, 0			# i = 0
-
 loop_cond:
-	bge	$t0, N_SIZE, loop_end
-
+	bge	$t0, N_SIZE, loop_end	# while (i < N_SIZE) {
 loop_body:
-	li	$v0, 5			# syscall 5 - read int
-	syscall
-	move	$t1, $v0		# move user-input value into $t1
+	li	$v0, 5			# scanf("%d", &numbers[i])
+	syscall				# mode 5: print_int
 
-	mul	$t2, $t0, 4		# index = i*4;
-	sw	$t1, numbers($t2)	# store $t1 into numbers[i]
-
-loop_step:
+					# this is the way lecturers and provided code will calculate addresses
+	la	$t1, numbers		# calculate the address of numbers
+	mul	$t2, $t0, 4		# multiply index by 4 because each array element is four bytes
+	add	$t1, $t1, $t2		# add modified index to address of start of array
+	sw	$v0, ($t1)		# store the value we read in at the address we calculated
+loop_incr:
 	add	$t0, $t0, 1		# i++
-
+	b	loop_cond		# }
 loop_end:
-	li	$v0, 0			# return 0
-	jr	$ra
+	jr	$ra			# return
+
 
 	.data
-numbers:	.space 4 * N_SIZE
+numbers:
+	# this is an array of words
+	.word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
