@@ -6,6 +6,8 @@ class: invert
 # More Number Encoding
 Week 7 Tute
 
+We'll start at 10 past :D
+
 --- 
 
 # Week 5 Revision:
@@ -68,7 +70,7 @@ Another way to think about it:
 
 # A quick example (in 8-bits):
 
-So $1$ is represented by `0b........`, and $-3$ is still `0b........`. So we can calculate $-3+1$:
+So $1$ is represented by `0b........`, and $-3$ is `0b........`. So we can calculate $-3+1$:
 
 ```
 0b........
@@ -145,7 +147,7 @@ We can only represent a finite amount of numbers with a computer - there are onl
 
 In decimal, 0.1 is one tenth, 0.01 is one hundredth, 0.001 is one thousandth, and so on.
 
-In binary, 0b0.1 is one half, 0b0.001 is one quarter, 0b0.001 is one eighth, and so on.
+In binary, 0b0.1 is one half, 0b0.01 is one quarter, 0b0.001 is one eighth, and so on.
 
 ---
 
@@ -189,7 +191,7 @@ There are special cases for 0 and infinity.
 
 If the exponent is at its minimum value (`0x00`), and the fraction is 0, the value of the number is 0.
 
-If the exponent is at its maximum value (`0xff`) and the fraction is 0, the value of the number is infinity (or minux infinity, depending on the sign).
+If the exponent is at its maximum value (`0xff`) and the fraction is 0, the value of the number is infinity (or minus infinity, depending on the sign).
 
 If the exponent is at its maximum value (`0xff`) and the fraction is not 0, the value of the number is NaN (Not a Number).
 
