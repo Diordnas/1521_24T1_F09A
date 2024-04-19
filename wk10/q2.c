@@ -1,21 +1,15 @@
-#include <stdio.h>
 #include <stdlib.h>
-
-#include <errno.h>
+#include <stdio.h>
 #include <spawn.h>
-#include <sys/types.h>
+#include <errno.h>
 #include <sys/wait.h>
 
-// get environ
 extern char **environ;
 
 void spawn_process(char *p_argv[]) {
-    // set up for posix spawn
-    pid_t id;
-
-    // posix spawn
+    pid_t pid;
     int spawn_status = posix_spawn(
-        &id,
+        &pid,
         p_argv[0],
         NULL,
         NULL,
@@ -23,39 +17,34 @@ void spawn_process(char *p_argv[]) {
         environ
     );
 
-    // handle errors
     if (spawn_status != 0) {
-        errno = spawn_status;   // Set the global error number
-        perror("posix_spawn");
-        exit(EXIT_FAILURE);
+        errno = spawn_status;
+        perror("Problem spawning process");
+        exit(1);
     }
 
-    // wait for it to finish
-    int spawn_exit_status;
-    if (waitpid(id, &spawn_exit_status, 0) == -1) {
-        perror("waitpid");
-        exit(EXIT_FAILURE);
+    int return_status;
+    waitpid(pid, &return_status, 0);
+
+    if (return_status != 0) {
+        errno = return_status;
+        perror("Problem spawning process");
+        exit(1);
     }
 }
 
-int main(int argc, char *argv[]) {
+int main() {
     char *date_argv[] = {"/bin/date", "+%d-%m-%Y", NULL};
     spawn_process(date_argv);
-
-    char *time_argv[] = {"/bin/date", "+%T", NULL};
-    spawn_process(time_argv);
 
     char *user_argv[] = {"/usr/bin/whoami", NULL};
     spawn_process(user_argv);
 
-    char *hostname_argv[] = {"/bin/hostname", "-f", NULL};
-    spawn_process(hostname_argv);
+    char *host_argv[] = {"/bin/hostname", "-f", NULL};
+    spawn_process(host_argv);
 
-    char *working_dir_argv[] = {"/usr/bin/realpath", ".", NULL};
-    spawn_process(working_dir_argv);
-
-    char *q1_argv[] = {"./q1", NULL};
-    spawn_process(q1_argv);
+    char *path_argv[] = {"/usr/bin/realpath", ".", NULL};
+    spawn_process(path_argv);
 
     return 0;
 }

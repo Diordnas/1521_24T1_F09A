@@ -1,30 +1,29 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include <pthread.h>
 
-void *print_infinite(void *data) {
-    char *string = data;
+void *other_thread(void *data) {
+    // Cast the void pointer to a char pointer
+    char *message = data;
 
-    while (true) {
-        printf("%s\n", string);
+    while(1) {
+        printf("Message: %s\n", message);
     }
+
 }
 
-int main(void) {
-    // create a thread
-    pthread_t thread;
-    char *thread_message = "everybody";
 
+int main() {
+    pthread_t other_thread_handle;
     pthread_create(
-        &thread,
+        &other_thread_handle,
         NULL,
-        print_infinite,
-        thread_message
+        other_thread,
+        "helloooooo"
     );
 
-    // infinitely print Hello
-    while (true) {
-        printf("Hello\n");
+    while (1) {
+        printf("Hello from the main thread!\n");
     }
+
+    return 0;
 }

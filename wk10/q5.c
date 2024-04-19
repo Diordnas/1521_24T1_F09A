@@ -8,13 +8,13 @@ int global_total = 0;
 
 void *add_ten_million_to_counter(void *data) {
     for (int i = 0; i < 10000000; i++) {
-
         // increment the global total by 1
-        global_total++; // assembly would be:
-                        // lw $t0, (global_total)
-                        // addi $t0, $t0, 1
-                        // sw $t0, (global_total)
-                        // except all one instruction because atomic
+        global_total++;
+        /* MIPS equivalent:
+            lw      $t0, (global_total)
+            addi    $t0, $t0, 1
+            sw      $t0, (global_total)
+        */
     }
 
     return NULL;
